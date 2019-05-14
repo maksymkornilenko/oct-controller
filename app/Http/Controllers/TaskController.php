@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests;
+use App\Task;
 
 class TaskController extends Controller {
 
@@ -11,8 +12,12 @@ class TaskController extends Controller {
 	$this->middleware('auth');
     }
 
-    public function index() {
-	return view('tasks.index');
+    public function index(Request $request) {
+	//$tasks = $request->user()->tasks()->get();
+	$tasks= Task::all();
+	return view('tasks.index', [
+	    'tasks' => $tasks,
+	]);
     }
 
     /**
@@ -30,6 +35,11 @@ class TaskController extends Controller {
 	    'name' => $request->name,
 	]);
 
+	return redirect(route('tasks_index'));
+    }
+    public function destroy(Request $request, Task $task){
+	$this->authorize('destroy', $task);
+	$task->delete();
 	return redirect(route('tasks_index'));
     }
 

@@ -35,6 +35,45 @@
 		    </form>
                 </div>
             </div>
+	    <!-- Текущие задачи -->
+	    @if (count($tasks) > 0)
+	    <div class="panel panel-default">
+		<div class="panel-heading">
+		    Текущая задачи
+		</div>
+		<div class="panel-body">
+		    <table class="table table-striped task-table">
+			<!-- Заголовок таблицы -->
+			<thead>
+			    <tr>
+				<th>Задача</th>
+				<th>Действие</th>
+			    </tr>
+			</thead>
+			<!-- Тело таблицы -->
+			<tbody>
+			    @foreach ($tasks as $task)
+			    <tr>
+				<!-- Имя задачи -->
+				<td class="table-text">
+				    <div>{{ $task->name }}</div>
+				</td>
+				<td>
+				    <form action="{{ route('tasks_destroy',$task->id) }}" method="POST">
+					{{ csrf_field() }}
+					{{ method_field('DELETE') }}
+					<button type="submit" id="delete-task-{{ $task->id }}" class="btn btn-danger">
+					    <i class="fa fa-btn fa-trash"></i>Удалить
+					</button>
+				    </form>
+				</td>
+			    </tr>
+			    @endforeach
+			</tbody>
+		    </table>
+		</div>
+	    </div>
+	    @endif
         </div>
     </div>
 </div>
